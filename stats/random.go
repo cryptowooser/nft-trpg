@@ -7,8 +7,9 @@ import (
 )
 
 type Stats struct {
-	HP int `statIndex:"1" json:"hp"`
-	MP int `statIndex:"2" json:"mp"`
+	HP     int `statIndex:"1" json:"hp"`
+	MP     int `statIndex:"2" json:"mp"`
+	Allure int `statIndex:"3" json:"allure"`
 }
 
 func NewStats(hp int, mp int) Stats {
