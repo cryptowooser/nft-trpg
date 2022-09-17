@@ -9,13 +9,33 @@ import (
 type Stats struct {
 	HP     int `invocation:"1" json:"hp"`
 	MP     int `invocation:"2" json:"mp"`
-	Allure int `invocation:"3" json:"allure"`
+	Attack int `invocation:"3" json:"attack"`
+	Magic  int `invocation:"4" json:"magic"`
+	Dodge  int `invocation:"5" json:"dodge"`
+}
+
+type ClassInfo struct {
+	HPModfier     int `invocation:"1" json:"hpModfier"`
+	MPModfier     int `invocation:"2" json:"mpModfier"`
+	AttackModfier int `invocation:"3" json:"attackModfier"`
+	MagicModfier  int `invocation:"4" json:"magicModfier"`
+	DodgeModfier  int `invocation:"5" json:"dodgeModfier"`
 }
 
 func NewStats(hp int, mp int) Stats {
 	return Stats{
 		HP: hp,
 		MP: mp,
+	}
+}
+
+func NewClassInfo(hpModfier int, mpModfier int, attackModifier int, magicModifier int, dodgeModifier int) ClassInfo {
+	return ClassInfo{
+		HPModfier:     hpModfier,
+		MPModfier:     mpModfier,
+		AttackModfier: attackModifier,
+		MagicModfier:  magicModifier,
+		DodgeModfier:  dodgeModifier,
 	}
 }
 
@@ -54,4 +74,21 @@ func getStatValue(id int64, invocation int) int {
 	}
 
 	return statVal
+}
+
+func GetClassInfo(className string) ClassInfo {
+
+	classInfo := ClassInfo{}
+
+	switch className {
+	case "StreetNinja":
+		classInfo = NewClassInfo(0, -3, 2, -3, 5)
+	case "CyberMage":
+		classInfo = NewClassInfo(-3, 3, -2, 5, -5)
+	case "CyborgEnforcer":
+		classInfo = NewClassInfo(5, -5, 5, -3, 5)
+	default:
+		classInfo = NewClassInfo(-999, -999, -999, -999, -999)
+	}
+	return classInfo
 }

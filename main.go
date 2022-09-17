@@ -51,5 +51,24 @@ func main() {
 
 		ctx.JSON(http.StatusOK, stats)
 	})
+
+	r.POST("/get-classInfo", func(ctx *gin.Context) {
+
+		type classInfoRequest struct {
+			ClassName string `json:"className"`
+		}
+
+		var req classInfoRequest
+
+		err := ctx.ShouldBind(&req)
+		if err != nil {
+			panic(err)
+		}
+
+		classInfo := stats.GetClassInfo(req.ClassName)
+
+		ctx.JSON(http.StatusOK, classInfo)
+	})
+
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
