@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"example.com/nft-trpg/stats"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,6 +32,24 @@ func main() {
 		}
 
 		ctx.JSON(http.StatusOK, resp)
+	})
+
+	r.POST("/get-stats", func(ctx *gin.Context) {
+
+		type statRequest struct {
+			ID int64 `json:"id"`
+		}
+
+		var req statRequest
+
+		err := ctx.ShouldBind(&req)
+		if err != nil {
+			panic(err)
+		}
+
+		stats := stats.GetStats(req.ID)
+
+		ctx.JSON(http.StatusOK, stats)
 	})
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
