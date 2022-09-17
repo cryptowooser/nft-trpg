@@ -22,8 +22,8 @@ func GetStats(id int64) Stats {
 
 	stats := Stats{}
 	statsType := reflect.TypeOf(stats)
-
-	for i := 0; i <= statsType.NumField(); i++ {
+	numField := statsType.NumField()
+	for i := 0; i < numField; i++ {
 		statField := statsType.Field(i)
 		strIndex := statField.Tag.Get("statIndex")
 		statIndex, err := strconv.Atoi(strIndex)
@@ -31,9 +31,9 @@ func GetStats(id int64) Stats {
 			panic(err)
 		}
 
-		statVal := getStatValue(id, statIndex)
+		statVal := int64(getStatValue(id, statIndex))
 
-		reflect.ValueOf(stats).Field(i).SetInt(int64(statVal))
+		reflect.ValueOf(&stats).Elem().Field(i).SetInt(statVal)
 	}
 
 	return stats
@@ -45,7 +45,7 @@ func getStatValue(id int64, statIndex int) int {
 
 	var statVal int
 
-	for i := 1; i <= statIndex; i++ {
+	for i := 0; i <= statIndex; i++ {
 		v := r.Intn(20)
 		if i == statIndex {
 			statVal = v
