@@ -7,9 +7,9 @@ import (
 )
 
 type Stats struct {
-	HP     int `statIndex:"1" json:"hp"`
-	MP     int `statIndex:"2" json:"mp"`
-	Allure int `statIndex:"3" json:"allure"`
+	HP     int `invocation:"1" json:"hp"`
+	MP     int `invocation:"2" json:"mp"`
+	Allure int `invocation:"3" json:"allure"`
 }
 
 func NewStats(hp int, mp int) Stats {
@@ -26,13 +26,13 @@ func GetStats(id int64) Stats {
 	numField := statsType.NumField()
 	for i := 0; i < numField; i++ {
 		statField := statsType.Field(i)
-		strIndex := statField.Tag.Get("statIndex")
-		statIndex, err := strconv.Atoi(strIndex)
+		stInvocation := statField.Tag.Get("invocation")
+		invocation, err := strconv.Atoi(stInvocation)
 		if err != nil {
 			panic(err)
 		}
 
-		statVal := int64(getStatValue(id, statIndex))
+		statVal := int64(getStatValue(id, invocation))
 
 		reflect.ValueOf(&stats).Elem().Field(i).SetInt(statVal)
 	}
@@ -40,15 +40,15 @@ func GetStats(id int64) Stats {
 	return stats
 }
 
-func getStatValue(id int64, statIndex int) int {
+func getStatValue(id int64, invocation int) int {
 
 	r := rand.New(rand.NewSource(id))
 
 	var statVal int
 
-	for i := 0; i <= statIndex; i++ {
+	for i := 0; i <= invocation; i++ {
 		v := r.Intn(20)
-		if i == statIndex {
+		if i == invocation {
 			statVal = v
 		}
 	}
