@@ -15,11 +15,11 @@ type Stats struct {
 }
 
 type ClassInfo struct {
-	HPModfier     int `invocation:"1" json:"hpModfier"`
-	MPModfier     int `invocation:"2" json:"mpModfier"`
-	AttackModfier int `invocation:"3" json:"attackModfier"`
-	MagicModfier  int `invocation:"4" json:"magicModfier"`
-	DodgeModfier  int `invocation:"5" json:"dodgeModfier"`
+	HPModfier     int `json:"hpModfier"`
+	MPModfier     int `json:"mpModfier"`
+	AttackModfier int `json:"attackModfier"`
+	MagicModfier  int `json:"magicModfier"`
+	DodgeModfier  int `json:"dodgeModfier"`
 }
 
 func NewStats(hp int, mp int) Stats {
@@ -67,10 +67,7 @@ func getStatValue(id int64, invocation int) int {
 	var statVal int
 
 	for i := 0; i <= invocation; i++ {
-		v := r.Intn(20)
-		if i == invocation {
-			statVal = v
-		}
+		statVal = r.Intn(20)
 	}
 
 	return statVal
@@ -78,7 +75,7 @@ func getStatValue(id int64, invocation int) int {
 
 func GetClassInfo(className string) ClassInfo {
 
-	classInfo := ClassInfo{}
+	var classInfo ClassInfo
 
 	switch className {
 	case "StreetNinja":
